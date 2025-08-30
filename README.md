@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Golden Canadian Homes Inc. - Website
 
-## Getting Started
+Sharia-compliant real estate investment platform for Ontario investors.
 
-First, run the development server:
+## 📚 Documentation
+
+**📍 All project documentation is located in the `/docs` folder at the project root:**
+
+- **[`../docs/business-overview.md`](../docs/business-overview.md)** - Complete business model, investment structure, and company information
+- **[`../docs/development-plan.md`](../docs/development-plan.md)** - Detailed 3-phase development plan with current progress
+
+## 🚀 Quick Start
 
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🏗️ Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework**: Next.js 15 (App Router)
+- **Styling**: Tailwind CSS v4
+- **Components**: shadcn/ui
+- **Deployment**: Vercel
+- **Email**: Resend integration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📊 Current Status
 
-## Learn More
+- ✅ **Phase 1 Complete**: Foundation & Sharia-compliant content
+- 🟡 **Phase 2 Ready**: Content implementation & forms
+- 🔵 **Phase 3 Planned**: Advanced features & optimization
 
-To learn more about Next.js, take a look at the following resources:
+## 🔗 Key Pages
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `/` - Home (Halal real-estate investing)
+- `/invest` - Investment tiers (5%-6% profit-share)
+- `/sharia-compliance` - Islamic finance principles
+- `/apply` - Investor application form
+- `/portfolio` - Current assets & development pipeline
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open [http://localhost:3000](http://localhost:3000) to view the site locally.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*For complete project information, refer to the documentation in the `/docs` folder.*

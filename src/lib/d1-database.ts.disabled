@@ -1,0 +1,406 @@
+/**
+ * Cloudflare D1 Database Adapter for GCHI
+ * Handles all database operations with D1
+ */
+
+import type { D1Database } from '@cloudflare/workers-types'
+import type { InvestorApplicationData, LeadMagnetData } from './types'
+
+// Extend the global context to include Cloudflare bindings
+declare global {
+  interface CloudflareEnv {
+    DB: D1Database
+    RATE_LIMIT: KVNamespace
+    EMAIL_QUEUE: Queue
+    DOCUMENTS: R2Bucket
+  }
+}
+
+export class GCHIDatabase {
+  private db: D1Database
+  
+  constructor(db: D1Database) {
+    this.db = db
+  }
+
+  /**
+   * Save investor application to database
+   */
+  async saveInvestorApplication(data: InvestorApplicationData & { 
+    ip_address?: string, 
+    user_agent?: string 
+  }): Promise<{ success: boolean; id?: number; error?: string }> {
+    try {
+      const result = await this.db.prepare(`
+        INSERT INTO investor_applications (
+          full_name, email, phone, province,
+          investment_amount, investor_type, eligibility_status, investment_timeline,
+          notes, privacy_consent, form_time_taken, ip_address, user_agent, source
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        data.fullName,
+        data.email,
+        data.phone,
+        data.province,
+        data.investmentAmount,
+        data.investorType,
+        JSON.stringify(data.eligibilityStatus),
+        data.investmentTimeline,
+        data.notes || null,
+        data.privacyConsent ? 1 : 0,
+        data.formTimeTaken,
+        data.ip_address || null,
+        data.user_agent || null,
+        'website'
+      ).run()
+
+      return { 
+        success: true, 
+        id: result.meta.last_row_id as number 
+      }
+    } catch (error) {
+      console.error('Failed to save investor application:', error)
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Database error' 
+      }
+    }
+  }
+
+  /**
+   * Save lead magnet download
+   */
+  async saveLeadMagnet(data: LeadMagnetData & {
+    ip_address?: string,
+    user_agent?: string,
+    utm_source?: string,
+    utm_medium?: string,
+    utm_campaign?: string
+  }): Promise<{ success: boolean; id?: number; error?: string }> {
+    try {
+      // Check if email already exists
+      const existing = await this.db.prepare(
+        'SELECT id, lead_score FROM lead_magnets WHERE email = ?'
+      ).bind(data.email).first()
+
+      if (existing) {
+        // Update existing lead with increased score
+        await this.db.prepare(`
+          UPDATE lead_magnets 
+          SET lead_score = lead_score + 5,
+              updated_at = CURRENT_TIMESTAMP
+          WHERE email = ?
+        `).bind(data.email).run()
+        
+        return { success: true, id: existing.id as number }
+      }
+
+      // Insert new lead
+      const result = await this.db.prepare(`
+        INSERT INTO lead_magnets (
+          first_name, last_name, email, phone, lead_magnet_type,
+          source, lead_score, ip_address, user_agent,
+          utm_source, utm_medium, utm_campaign
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        data.firstName,
+        data.lastName,
+        data.email,
+        data.phone || null,
+        data.leadMagnetType,
+        data.source || 'website',
+        10, // Initial lead score
+        data.ip_address || null,
+        data.user_agent || null,
+        data.utm_source || null,
+        data.utm_medium || null,
+        data.utm_campaign || null
+      ).run()
+
+      return { 
+        success: true, 
+        id: result.meta.last_row_id as number 
+      }
+    } catch (error) {
+      console.error('Failed to save lead magnet:', error)
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Database error' 
+      }
+    }
+  }
+
+  /**
+   * Update lead score based on actions
+   */
+  async updateLeadScore(email: string, action: 'email_opened' | 'email_clicked' | 'form_started' | 'form_abandoned'): Promise<void> {
+    const scores = {
+      'email_opened': 2,
+      'email_clicked': 5,
+      'form_started': 10,
+      'form_abandoned': -5
+    }
+
+    try {
+      await this.db.prepare(`
+        UPDATE lead_magnets 
+        SET lead_score = lead_score + ?,
+            engagement_score = engagement_score + ?,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE email = ?
+      `).bind(scores[action], scores[action], email).run()
+    } catch (error) {
+      console.error('Failed to update lead score:', error)
+    }
+  }
+
+  /**
+   * Get leads for nurture campaign
+   */
+  async getLeadsForNurture(day: number): Promise<Array<{email: string, firstName: string}>> {
+    try {
+      const results = await this.db.prepare(`
+        SELECT email, first_name as firstName
+        FROM lead_magnets
+        WHERE nurture_day = ?
+          AND unsubscribed = 0
+          AND email IS NOT NULL
+      `).bind(day - 1).all() // Get leads ready for the next day
+
+      return results.results as Array<{email: string, firstName: string}>
+    } catch (error) {
+      console.error('Failed to get nurture leads:', error)
+      return []
+    }
+  }
+
+  /**
+   * Track email sent
+   */
+  async trackEmailSent(email: string, emailType: string, messageId?: string): Promise<void> {
+    try {
+      // Update lead_magnets table
+      await this.db.prepare(`
+        UPDATE lead_magnets 
+        SET emails_sent = emails_sent + 1,
+            last_email_sent_at = CURRENT_TIMESTAMP,
+            nurture_day = nurture_day + 1
+        WHERE email = ?
+      `).bind(email).run()
+
+      // Add to email_queue for tracking
+      await this.db.prepare(`
+        INSERT INTO email_queue (
+          recipient_email, email_type, status, sent_at, message_id
+        ) VALUES (?, ?, 'sent', CURRENT_TIMESTAMP, ?)
+      `).bind(email, emailType, messageId || null).run()
+    } catch (error) {
+      console.error('Failed to track email sent:', error)
+    }
+  }
+
+  /**
+   * Save form abandonment
+   */
+  async saveFormAbandonment(data: {
+    session_id: string,
+    form_data: any,
+    current_step: number,
+    email?: string,
+    recovery_token?: string,
+    time_spent: number
+  }): Promise<void> {
+    try {
+      await this.db.prepare(`
+        INSERT INTO form_abandonment (
+          session_id, form_data, current_step, email, 
+          recovery_token, time_spent, fields_completed
+        ) VALUES (?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(session_id) DO UPDATE SET
+          form_data = excluded.form_data,
+          current_step = excluded.current_step,
+          email = excluded.email,
+          time_spent = excluded.time_spent,
+          updated_at = CURRENT_TIMESTAMP
+      `).bind(
+        data.session_id,
+        JSON.stringify(data.form_data),
+        data.current_step,
+        data.email || null,
+        data.recovery_token || null,
+        data.time_spent,
+        Object.keys(data.form_data).filter(k => data.form_data[k]).length
+      ).run()
+    } catch (error) {
+      console.error('Failed to save form abandonment:', error)
+    }
+  }
+
+  /**
+   * Get application statistics
+   */
+  async getApplicationStats(): Promise<{
+    total: number,
+    today: number,
+    thisWeek: number,
+    conversionRate: number,
+    byTier: Record<string, number>
+  }> {
+    try {
+      const stats = await this.db.prepare(`
+        SELECT 
+          COUNT(*) as total,
+          SUM(CASE WHEN DATE(created_at) = DATE('now') THEN 1 ELSE 0 END) as today,
+          SUM(CASE WHEN DATE(created_at) >= DATE('now', '-7 days') THEN 1 ELSE 0 END) as thisWeek,
+          SUM(CASE WHEN status = 'converted' THEN 1 ELSE 0 END) as converted
+        FROM investor_applications
+      `).first()
+
+      const byTier = await this.db.prepare(`
+        SELECT investment_amount, COUNT(*) as count
+        FROM investor_applications
+        GROUP BY investment_amount
+      `).all()
+
+      const tierMap: Record<string, number> = {}
+      byTier.results.forEach((row: any) => {
+        tierMap[row.investment_amount] = row.count
+      })
+
+      return {
+        total: stats?.total as number || 0,
+        today: stats?.today as number || 0,
+        thisWeek: stats?.thisWeek as number || 0,
+        conversionRate: stats?.total ? ((stats?.converted as number || 0) / (stats?.total as number)) * 100 : 0,
+        byTier: tierMap
+      }
+    } catch (error) {
+      console.error('Failed to get application stats:', error)
+      return {
+        total: 0,
+        today: 0,
+        thisWeek: 0,
+        conversionRate: 0,
+        byTier: {}
+      }
+    }
+  }
+
+  /**
+   * Track analytics event
+   */
+  async trackEvent(event: {
+    type: string,
+    category?: string,
+    value?: string,
+    user_id?: string,
+    session_id?: string,
+    page_url?: string,
+    metadata?: any
+  }): Promise<void> {
+    try {
+      await this.db.prepare(`
+        INSERT INTO analytics_events (
+          event_type, event_category, event_value,
+          user_id, session_id, page_url, metadata
+        ) VALUES (?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        event.type,
+        event.category || null,
+        event.value || null,
+        event.user_id || null,
+        event.session_id || null,
+        event.page_url || null,
+        event.metadata ? JSON.stringify(event.metadata) : null
+      ).run()
+    } catch (error) {
+      console.error('Failed to track event:', error)
+    }
+  }
+}
+
+/**
+ * Rate limiting with Cloudflare KV
+ */
+export class RateLimiter {
+  private kv: KVNamespace
+  
+  constructor(kv: KVNamespace) {
+    this.kv = kv
+  }
+
+  async checkLimit(identifier: string, limit: number = 3, windowMs: number = 900000): Promise<{
+    allowed: boolean,
+    remaining: number,
+    resetAt: number
+  }> {
+    const key = `rate_limit:${identifier}`
+    const now = Date.now()
+    
+    // Get current count
+    const data = await this.kv.get(key, 'json') as { count: number, resetAt: number } | null
+    
+    if (!data || data.resetAt < now) {
+      // New window
+      const resetAt = now + windowMs
+      await this.kv.put(key, JSON.stringify({ count: 1, resetAt }), {
+        expirationTtl: Math.ceil(windowMs / 1000)
+      })
+      
+      return { allowed: true, remaining: limit - 1, resetAt }
+    }
+    
+    if (data.count >= limit) {
+      return { allowed: false, remaining: 0, resetAt: data.resetAt }
+    }
+    
+    // Increment count
+    data.count++
+    await this.kv.put(key, JSON.stringify(data), {
+      expirationTtl: Math.ceil((data.resetAt - now) / 1000)
+    })
+    
+    return { allowed: true, remaining: limit - data.count, resetAt: data.resetAt }
+  }
+}
+
+/**
+ * Email queue with Cloudflare Queues
+ */
+export class EmailQueue {
+  private queue: Queue
+  
+  constructor(queue: Queue) {
+    this.queue = queue
+  }
+
+  async addEmail(data: {
+    type: 'investor_notification' | 'investor_acknowledgment' | 'lead_magnet' | 'nurture',
+    recipient: string,
+    templateData: any,
+    delay?: number
+  }): Promise<void> {
+    await this.queue.send({
+      ...data,
+      timestamp: Date.now(),
+      retries: 0
+    }, {
+      delaySeconds: data.delay || 0
+    })
+  }
+
+  async processEmails(batch: MessageBatch): Promise<void> {
+    for (const message of batch.messages) {
+      try {
+        const data = message.body as any
+        
+        // Process based on email type
+        // This would call your EmailService methods
+        
+        message.ack() // Acknowledge successful processing
+      } catch (error) {
+        message.retry() // Retry on failure
+      }
+    }
+  }
+}

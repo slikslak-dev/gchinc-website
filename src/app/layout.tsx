@@ -4,6 +4,7 @@ import "./globals.css";
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { OrganizationStructuredData, WebSiteStructuredData } from '@/components/structured-data'
+import { ThemeProvider } from '@/components/theme-provider'
 
 const inter = Inter({
   variable: "--font-sans",
@@ -16,9 +17,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Golden Canadian Homes Inc. — Ontario Real Estate Investments",
-  description: "Invest in income-producing rentals and thoughtful developments across Ontario. Two tiers (6%–10% target). Quarterly payouts after year one.",
-  keywords: "Ontario real estate, rental investments, accredited investors, OM exemption, income-producing properties",
+  title: 'Professional Sharia-Compliant Real Estate Investment | GCHI',
+  description: 'Institutional-grade Ontario real estate investment opportunities. Join accredited investors earning consistent returns through professionally managed, Sharia-compliant partnerships.',
+  keywords: "Ontario real estate, institutional investments, Sharia-compliant, accredited investors, professional management, Islamic finance, GCHI, real estate partnerships",
 };
 
 export default function RootLayout({
@@ -27,17 +28,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <OrganizationStructuredData />
         <WebSiteStructuredData />
       </head>
       <body className={`${inter.variable} ${playfair.variable} antialiased min-h-screen flex flex-col`}>
-        <SiteHeader />
-        <main className="flex-1">
-          {children}
-        </main>
-        <SiteFooter />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SiteHeader />
+          <main className="flex-1">
+            {children}
+          </main>
+          <SiteFooter />
+        </ThemeProvider>
       </body>
     </html>
   );
