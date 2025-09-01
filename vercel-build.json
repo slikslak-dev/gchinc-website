@@ -1,5 +1,0 @@
-{
-  "framework": null,
-  "installCommand": "echo 'Skipping install'",
-  "buildCommand": "echo 'Using prebuilt Next.js output'"
-}

@@ -1,0 +1,137 @@
+2025-09-01T16:19:02.901Z	Initializing build environment...
+2025-09-01T16:19:11.007Z	Success: Finished initializing build environment
+2025-09-01T16:19:11.256Z	Cloning repository...
+2025-09-01T16:19:12.557Z	Detected the following tools from environment: npm@10.9.2, nodejs@22.16.0
+2025-09-01T16:19:12.562Z	Restoring from dependencies cache
+2025-09-01T16:19:12.565Z	Restoring from build output cache
+2025-09-01T16:19:13.032Z	Installing project dependencies: npm clean-install --progress=false
+2025-09-01T16:19:20.644Z	npm warn deprecated path-match@1.2.4: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
+2025-09-01T16:20:00.687Z	
+2025-09-01T16:20:00.687Z	added 667 packages, and audited 668 packages in 47s
+2025-09-01T16:20:00.688Z	
+2025-09-01T16:20:00.693Z	177 packages are looking for funding
+2025-09-01T16:20:00.693Z	  run `npm fund` for details
+2025-09-01T16:20:00.742Z	
+2025-09-01T16:20:00.742Z	12 vulnerabilities (1 low, 7 moderate, 4 high)
+2025-09-01T16:20:00.743Z	
+2025-09-01T16:20:00.749Z	To address issues that do not require attention, run:
+2025-09-01T16:20:00.749Z	  npm audit fix
+2025-09-01T16:20:00.749Z	
+2025-09-01T16:20:00.749Z	Some issues need review, and may require choosing
+2025-09-01T16:20:00.750Z	a different dependency.
+2025-09-01T16:20:00.750Z	
+2025-09-01T16:20:00.750Z	Run `npm audit` for details.
+2025-09-01T16:20:00.903Z	Executing user build command: npm ci && npm run build
+2025-09-01T16:20:25.122Z	npm warn deprecated path-match@1.2.4: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
+2025-09-01T16:21:04.792Z	
+2025-09-01T16:21:04.793Z	added 667 packages, and audited 668 packages in 1m
+2025-09-01T16:21:04.794Z	
+2025-09-01T16:21:04.794Z	177 packages are looking for funding
+2025-09-01T16:21:04.795Z	  run `npm fund` for details
+2025-09-01T16:21:04.842Z	
+2025-09-01T16:21:04.843Z	12 vulnerabilities (1 low, 7 moderate, 4 high)
+2025-09-01T16:21:04.843Z	
+2025-09-01T16:21:04.843Z	To address issues that do not require attention, run:
+2025-09-01T16:21:04.844Z	  npm audit fix
+2025-09-01T16:21:04.844Z	
+2025-09-01T16:21:04.844Z	Some issues need review, and may require choosing
+2025-09-01T16:21:04.845Z	a different dependency.
+2025-09-01T16:21:04.845Z	
+2025-09-01T16:21:04.845Z	Run `npm audit` for details.
+2025-09-01T16:21:05.414Z	
+2025-09-01T16:21:05.416Z	> gchi-website@0.1.0 build
+2025-09-01T16:21:05.417Z	> next build
+2025-09-01T16:21:05.417Z	
+2025-09-01T16:21:06.949Z	⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2025-09-01T16:21:06.957Z	Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2025-09-01T16:21:06.957Z	This information is used to shape Next.js' roadmap and prioritize features.
+2025-09-01T16:21:06.957Z	You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2025-09-01T16:21:06.957Z	https://nextjs.org/telemetry
+2025-09-01T16:21:06.957Z	
+2025-09-01T16:21:07.049Z	   ▲ Next.js 15.5.2
+2025-09-01T16:21:07.050Z	   - Experiments (use with caution):
+2025-09-01T16:21:07.050Z	     · optimizePackageImports
+2025-09-01T16:21:07.050Z	
+2025-09-01T16:21:07.328Z	   Creating an optimized production build ...
+2025-09-01T16:21:41.545Z	 ✓ Compiled successfully in 29.2s
+2025-09-01T16:21:41.553Z	   Linting and checking validity of types ...
+2025-09-01T16:21:56.564Z	   Collecting page data ...
+2025-09-01T16:21:57.513Z	 ⚠ Using edge runtime on a page currently disables static generation for that page
+2025-09-01T16:22:00.243Z	   Generating static pages (0/19) ...
+2025-09-01T16:22:01.570Z	   Generating static pages (4/19) 
+2025-09-01T16:22:02.269Z	   Generating static pages (9/19) 
+2025-09-01T16:22:02.271Z	   Generating static pages (14/19) 
+2025-09-01T16:22:02.408Z	 ✓ Generating static pages (19/19)
+2025-09-01T16:22:03.402Z	   Finalizing page optimization ...
+2025-09-01T16:22:03.402Z	   Collecting build traces ...
+2025-09-01T16:22:16.114Z	
+2025-09-01T16:22:16.127Z	Route (app)                                 Size  First Load JS
+2025-09-01T16:22:16.127Z	┌ ○ /                                    7.05 kB         118 kB
+2025-09-01T16:22:16.127Z	├ ○ /_not-found                            995 B         103 kB
+2025-09-01T16:22:16.127Z	├ ○ /about                                 148 B         102 kB
+2025-09-01T16:22:16.127Z	├ ƒ /api/investor-application              148 B         102 kB
+2025-09-01T16:22:16.127Z	├ ƒ /api/lead-magnet                       148 B         102 kB
+2025-09-01T16:22:16.127Z	├ ƒ /api/nurture-email                     148 B         102 kB
+2025-09-01T16:22:16.128Z	├ ○ /apply                                5.9 kB         117 kB
+2025-09-01T16:22:16.128Z	├ ○ /downloads/5-sharia-questions          124 B         114 kB
+2025-09-01T16:22:16.128Z	├ ○ /downloads/halal-investing-guide       124 B         114 kB
+2025-09-01T16:22:16.128Z	├ ○ /downloads/ontario-market-outlook      124 B         114 kB
+2025-09-01T16:22:16.128Z	├ ○ /faqs                                5.22 kB         111 kB
+2025-09-01T16:22:16.128Z	├ ○ /how-it-works                        7.91 kB         110 kB
+2025-09-01T16:22:16.128Z	├ ○ /invest                                148 B         102 kB
+2025-09-01T16:22:16.128Z	├ ○ /legal                                 148 B         102 kB
+2025-09-01T16:22:16.130Z	├ ○ /maintenance                           148 B         102 kB
+2025-09-01T16:22:16.130Z	├ ○ /portfolio                             148 B         102 kB
+2025-09-01T16:22:16.131Z	├ ○ /privacy                               148 B         102 kB
+2025-09-01T16:22:16.131Z	├ ○ /sharia-compliance                     148 B         102 kB
+2025-09-01T16:22:16.131Z	└ ○ /terms                                 148 B         102 kB
+2025-09-01T16:22:16.131Z	+ First Load JS shared by all             102 kB
+2025-09-01T16:22:16.131Z	  ├ chunks/493-69393df6a846909a.js       45.7 kB
+2025-09-01T16:22:16.132Z	  ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+2025-09-01T16:22:16.132Z	  └ other shared chunks (total)          1.94 kB
+2025-09-01T16:22:16.132Z	
+2025-09-01T16:22:16.132Z	
+2025-09-01T16:22:16.132Z	ƒ Middleware                             34.2 kB
+2025-09-01T16:22:16.132Z	
+2025-09-01T16:22:16.132Z	○  (Static)   prerendered as static content
+2025-09-01T16:22:16.132Z	ƒ  (Dynamic)  server-rendered on demand
+2025-09-01T16:22:16.132Z	
+2025-09-01T16:22:16.249Z	Success: Build command completed
+2025-09-01T16:22:16.251Z	Executing user deploy command: npx wrangler versions upload
+2025-09-01T16:22:18.354Z	
+2025-09-01T16:22:18.354Z	 ⛅️ wrangler 4.33.1
+2025-09-01T16:22:18.354Z	───────────────────
+2025-09-01T16:22:18.449Z	▲ [WARNING] Multiple environments are defined in the Wrangler configuration file, but no target environment was specified for the versions upload command.
+2025-09-01T16:22:18.449Z	
+2025-09-01T16:22:18.450Z	  To avoid unintentional changes to the wrong environment, it is recommended to explicitly specify the target environment using the `-e|--env` flag.
+2025-09-01T16:22:18.450Z	  If your intention is to use the top-level environment of your configuration simply pass an empty string to the flag to target such environment. For example `--env=""`.
+2025-09-01T16:22:18.450Z	
+2025-09-01T16:22:18.450Z	
+2025-09-01T16:22:18.453Z	
+2025-09-01T16:22:18.456Z	✘ [ERROR] Missing entry-point to Worker script or to assets directory
+2025-09-01T16:22:18.456Z	
+2025-09-01T16:22:18.456Z	  
+2025-09-01T16:22:18.456Z	  If there is code to deploy, you can either:
+2025-09-01T16:22:18.456Z	  - Specify an entry-point to your Worker script via the command line (ex: `npx wrangler versions upload src/index.ts`)
+2025-09-01T16:22:18.456Z	  - Or add the following to your "wrangler.toml" file:
+2025-09-01T16:22:18.457Z	  
+2025-09-01T16:22:18.457Z	  ```
+2025-09-01T16:22:18.457Z	  main = "src/index.ts"
+2025-09-01T16:22:18.457Z	  
+2025-09-01T16:22:18.457Z	  ```
+2025-09-01T16:22:18.457Z	  
+2025-09-01T16:22:18.457Z	  
+2025-09-01T16:22:18.458Z	  If are uploading a directory of assets, you can either:
+2025-09-01T16:22:18.458Z	  - Specify the path to the directory of assets via the command line: (ex: `npx wrangler versions upload --assets=./dist`)
+2025-09-01T16:22:18.458Z	  - Or add the following to your "wrangler.toml" file:
+2025-09-01T16:22:18.458Z	  
+2025-09-01T16:22:18.458Z	  ```
+2025-09-01T16:22:18.458Z	  [assets]
+2025-09-01T16:22:18.458Z	  directory = "./dist"
+2025-09-01T16:22:18.458Z	  
+2025-09-01T16:22:18.459Z	  ```
+2025-09-01T16:22:18.459Z	  
+2025-09-01T16:22:18.459Z	
+2025-09-01T16:22:18.459Z	
+2025-09-01T16:22:18.500Z	🪵  Logs were written to "/opt/buildhome/.config/.wrangler/logs/wrangler-2025-09-01_16-22-17_539.log"
+2025-09-01T16:22:18.671Z	Failed: error occurred while running deploy command
