@@ -2,6 +2,7 @@ name = "goldencanadianhomes"
 main = ".vercel/output/static/_worker.js"
 compatibility_date = "2025-08-01"
 compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
 
 [build]
 command = "npm run build:next && npx @cloudflare/next-on-pages"
