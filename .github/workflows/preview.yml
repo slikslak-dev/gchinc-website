@@ -33,11 +33,9 @@ jobs:
           # Preview environment variables
           NEXT_PUBLIC_SITE_URL: https://preview.gchi-website.pages.dev
 
-      # Build for Cloudflare using Vercel output
+      # Build for Cloudflare Pages
       - name: Build for Cloudflare
-        run: |
-          npx vercel build --prod --local-config=vercel-build.json
-          npx @cloudflare/next-on-pages --skip-build
+        run: npx @cloudflare/next-on-pages
 
       # Deploy preview to Cloudflare Pages
       - name: Deploy Preview to Cloudflare Pages

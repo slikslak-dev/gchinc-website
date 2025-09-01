@@ -36,11 +36,9 @@ jobs:
           # Add any build-time environment variables here
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL || 'https://gchi-website.pages.dev' }}
 
-      # Build for Cloudflare using Vercel output
+      # Build for Cloudflare Pages
       - name: Build for Cloudflare
-        run: |
-          npx vercel build --prod --local-config=vercel-build.json
-          npx @cloudflare/next-on-pages --skip-build
+        run: npx @cloudflare/next-on-pages
 
       # Deploy to Cloudflare Pages
       - name: Deploy to Cloudflare Pages
