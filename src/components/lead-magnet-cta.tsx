@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { LeadMagnetModal } from '@/components/lead-magnet-modal'
 import { useLeadMagnet } from '@/hooks/use-lead-magnet'

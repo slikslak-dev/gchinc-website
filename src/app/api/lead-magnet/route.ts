@@ -3,6 +3,10 @@ import { EmailService } from '@/lib/email'
 import { validateEmail } from '@/lib/validation'
 import type { LeadMagnetData } from '@/lib/types'
 
+// Configure for Edge Runtime
+export const runtime = 'edge'
+export const preferredRegion = 'auto'
+
 // Rate limiting store (in production, use Redis or database)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>()
 

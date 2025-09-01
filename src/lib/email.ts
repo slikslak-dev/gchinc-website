@@ -1,7 +1,60 @@
-import { Resend } from 'resend'
 import type { InvestorApplicationData, EmailResponse, TierBenefits, LeadMagnetData, NurtureEmailTemplate } from './types'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Edge-compatible email service using fetch API
+function getEmailConfig() {
+  return {
+    RESEND_API_KEY: process.env.RESEND_API_KEY || '',
+    FROM_EMAIL: process.env.FROM_EMAIL || '',
+    ADMIN_EMAIL: process.env.ADMIN_EMAIL || '',
+    REPLY_TO_EMAIL: process.env.REPLY_TO_EMAIL || '',
+  }
+}
+
+async function sendEmail(params: {
+  to: string | string[]
+  subject: string
+  html: string
+  replyTo?: string
+}): Promise<{ success: boolean; data?: any; error?: string }> {
+  const config = getEmailConfig()
+  
+  if (!config.RESEND_API_KEY) {
+    return { success: false, error: 'RESEND_API_KEY not configured' }
+  }
+
+  try {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${config.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: config.FROM_EMAIL,
+        to: params.to,
+        subject: params.subject,
+        html: params.html,
+        reply_to: params.replyTo || config.REPLY_TO_EMAIL,
+      }),
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      return { 
+        success: false, 
+        error: `Resend API error (${response.status}): ${errorText}` 
+      }
+    }
+
+    const data = await response.json()
+    return { success: true, data }
+  } catch (error) {
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Failed to send email' 
+    }
+  }
+}
 
 // Investment tier information for email templates
 const INVESTMENT_TIERS: Record<string, TierBenefits> = {
@@ -211,15 +264,15 @@ export class EmailService {
         </html>
       `
 
-      const result = await resend.emails.send({
-        from: process.env.FROM_EMAIL!,
-        to: process.env.ADMIN_EMAIL!,
-        replyTo: applicationData.email,
+      const config = getEmailConfig()
+      const result = await sendEmail({
+        to: config.ADMIN_EMAIL,
         subject: `🚨 New ${tier.title} Application - ${applicationData.fullName}`,
         html,
+        replyTo: applicationData.email,
       })
 
-      return { success: true, messageId: result.data?.id }
+      return { success: result.success, messageId: result.data?.id }
     } catch (error) {
       console.error('Failed to send admin notification:', error)
       return { 
@@ -354,15 +407,13 @@ export class EmailService {
         </html>
       `
 
-      const result = await resend.emails.send({
-        from: process.env.FROM_EMAIL!,
+      const result = await sendEmail({
         to: leadData.email,
-        replyTo: process.env.REPLY_TO_EMAIL!,
         subject: `📘 Your ${magnet.title} - GCHI`,
         html,
       })
 
-      return { success: true, messageId: result.data?.id }
+      return { success: result.success, messageId: result.data?.id }
     } catch (error) {
       console.error('Failed to send lead magnet email:', error)
       return { 
@@ -420,15 +471,13 @@ export class EmailService {
 
       const html = this.getNurtureEmailTemplate(emailData.firstName, template)
 
-      const result = await resend.emails.send({
-        from: process.env.FROM_EMAIL!,
+      const result = await sendEmail({
         to: emailData.email,
-        replyTo: process.env.REPLY_TO_EMAIL!,
         subject: template.subject,
         html,
       })
 
-      return { success: true, messageId: result.data?.id }
+      return { success: result.success, messageId: result.data?.id }
     } catch (error) {
       console.error('Failed to send nurture email:', error)
       return { 
@@ -736,15 +785,13 @@ export class EmailService {
         </html>
       `
 
-      const result = await resend.emails.send({
-        from: process.env.FROM_EMAIL!,
+      const result = await sendEmail({
         to: applicationData.email,
-        replyTo: process.env.REPLY_TO_EMAIL!,
         subject: `Welcome to GCHI - ${tier.title} Application Confirmed`,
         html,
       })
 
-      return { success: true, messageId: result.data?.id }
+      return { success: result.success, messageId: result.data?.id }
     } catch (error) {
       console.error('Failed to send investor acknowledgment:', error)
       return { 

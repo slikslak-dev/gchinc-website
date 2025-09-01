@@ -21,7 +21,7 @@ This is a Sharia-compliant real estate investment platform website for GCHI (Gol
 - **Styling**: Tailwind CSS v4 with custom design tokens in globals.css
 - **Components**: shadcn/ui components in src/components/ui
 - **Email Service**: Resend integration for investor applications and lead magnets
-- **Deployment**: Vercel with security headers configured in vercel.json
+- **Deployment**: Cloudflare Pages with automatic Git deployments
 
 ### Directory Structure
 - `src/app/` - Next.js App Router pages and API routes

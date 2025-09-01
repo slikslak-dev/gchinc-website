@@ -1,41 +1,45 @@
 name = "gchi-website"
-compatibility_date = "2024-01-01"
-pages_build_output_dir = ".next"
+compatibility_date = "2025-08-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
 
-# D1 Database binding
-[[d1_databases]]
-binding = "DB"
-database_name = "gchi-database"
-database_id = "YOUR_DATABASE_ID" # Will be set after creation
+# D1 Database binding (optional - uncomment when needed)
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "gchi-database"
+# database_id = "YOUR_DATABASE_ID"
 
-# KV Namespace for rate limiting
-[[kv_namespaces]]
-binding = "RATE_LIMIT"
-id = "YOUR_KV_NAMESPACE_ID" # Will be set after creation
+# KV Namespace for rate limiting (optional - uncomment when needed)
+# [[kv_namespaces]]
+# binding = "RATE_LIMIT_KV"
+# id = "YOUR_KV_NAMESPACE_ID"
 
-# Queue for email jobs
-[[queues.producers]]
-binding = "EMAIL_QUEUE"
-queue = "email-queue"
+# R2 Storage for PDFs (optional - uncomment when needed)
+# [[r2_buckets]]
+# binding = "DOCUMENTS"
+# bucket_name = "gchi-documents"
 
-[[queues.consumers]]
-queue = "email-queue"
-max_batch_size = 10
-max_batch_timeout = 30
+# Queue for email jobs (optional - uncomment when needed)
+# [[queues.producers]]
+# binding = "EMAIL_QUEUE"
+# queue = "email-queue"
 
-# R2 Storage for PDFs
-[[r2_buckets]]
-binding = "DOCUMENTS"
-bucket_name = "gchi-documents"
-
-# Environment variables (add these to Cloudflare dashboard)
+# Environment variables (set these in Cloudflare dashboard or as secrets)
 [vars]
 NODE_ENV = "production"
+NEXT_PUBLIC_APP_URL = "http://localhost:8787"
 
-# Development settings
-[env.development]
-vars = { NODE_ENV = "development" }
+# Preview settings (for branch deployments)
+[env.preview.vars]
+NODE_ENV = "preview"
+NEXT_PUBLIC_APP_URL = "http://localhost:8787"
 
 # Production settings  
-[env.production]
-vars = { NODE_ENV = "production" }
+[env.production.vars]
+NODE_ENV = "production"
+NEXT_PUBLIC_APP_URL = "https://goldencanadianhomes.ca"
+
+# Production KV bindings (uncomment when created)
+# [[env.production.kv_namespaces]]
+# binding = "RATE_LIMIT_KV"
+# id = "YOUR_PROD_KV_NAMESPACE_ID"

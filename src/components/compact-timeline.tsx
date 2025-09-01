@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react'
-import { ChevronDown, ChevronRight, Clock, Check, ArrowRight } from 'lucide-react'
+import { ChevronRight, Clock, Check, ArrowRight } from 'lucide-react'
 
 interface TimelineStep {
   phase: string

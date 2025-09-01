@@ -150,15 +150,6 @@ function ProcessStep({
 }
 
 export default function HowItWorksPage() {
-  const [activeTimeline, setActiveTimeline] = useState(0)
-  
-  const timelineSteps = [
-    { phase: 'Day 0-1', title: 'Application & Immediate Response', description: 'Submit application, receive confirmation within 2 hours' },
-    { phase: 'Day 2-7', title: 'Consultation & Document Preparation', description: 'Personal call scheduled and documents prepared for review' },
-    { phase: 'Week 2-3', title: 'Review & Funding', description: 'Document review at your pace, funding completion' },
-    { phase: 'Ongoing', title: 'Management & Growth', description: 'Professional property management and portfolio growth' },
-    { phase: 'Quarterly', title: 'Reports & Distributions', description: 'Detailed reports and profit distributions (after month 12)' }
-  ]
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-accent/10">

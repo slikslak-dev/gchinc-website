@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { EmailService } from '@/lib/email'
 
+// Configure for Edge Runtime
+export const runtime = 'edge'
+export const preferredRegion = 'auto'
+
 // This would typically be called by a cron job or queue system
 // For demonstration, we'll create a simple endpoint that can be triggered
 

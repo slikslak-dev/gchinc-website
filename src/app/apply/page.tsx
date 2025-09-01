@@ -260,7 +260,7 @@ export default function ApplyPage() {
   }
 
   // Real-time validation on field blur
-  const handleFieldBlur = (field: string) => {
+  const handleFieldBlur = () => {
     validateForm()
   }
 
@@ -484,7 +484,7 @@ export default function ApplyPage() {
                         id="fullName"
                         value={formData.fullName}
                         onChange={(e) => handleInputChange('fullName', e.target.value)}
-                        onBlur={() => handleFieldBlur('fullName')}
+                        onBlur={() => handleFieldBlur()}
                         className={cn(
                           "w-full px-4 py-3 rounded-lg border bg-input text-foreground placeholder-muted-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary",
                           errors.fullName ? "border-destructive" : "border-border"
@@ -505,7 +505,7 @@ export default function ApplyPage() {
                         id="email"
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
-                        onBlur={() => handleFieldBlur('email')}
+                        onBlur={() => handleFieldBlur()}
                         className={cn(
                           "w-full px-4 py-3 rounded-lg border bg-input text-foreground placeholder-muted-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary",
                           errors.email ? "border-destructive" : "border-border"
@@ -526,7 +526,7 @@ export default function ApplyPage() {
                         id="phone"
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
-                        onBlur={() => handleFieldBlur('phone')}
+                        onBlur={() => handleFieldBlur()}
                         className={cn(
                           "w-full px-4 py-3 rounded-lg border bg-input text-foreground placeholder-muted-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary",
                           errors.phone ? "border-destructive" : "border-border"
@@ -546,7 +546,7 @@ export default function ApplyPage() {
                         id="province"
                         value={formData.province}
                         onChange={(e) => handleInputChange('province', e.target.value)}
-                        onBlur={() => handleFieldBlur('province')}
+                        onBlur={() => handleFieldBlur()}
                         className={cn(
                           "w-full px-4 py-3 rounded-lg border bg-input text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary",
                           errors.province ? "border-destructive" : "border-border"
@@ -584,7 +584,7 @@ export default function ApplyPage() {
                           id="investmentAmount"
                           value={formData.investmentAmount}
                           onChange={(e) => handleInputChange('investmentAmount', e.target.value)}
-                          onBlur={() => handleFieldBlur('investmentAmount')}
+                          onBlur={() => handleFieldBlur()}
                           className={cn(
                             "w-full px-4 py-3 rounded-lg border bg-input text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary",
                             errors.investmentAmount ? "border-destructive" : "border-border"
@@ -609,7 +609,7 @@ export default function ApplyPage() {
                           id="investorType"
                           value={formData.investorType}
                           onChange={(e) => handleInputChange('investorType', e.target.value)}
-                          onBlur={() => handleFieldBlur('investorType')}
+                          onBlur={() => handleFieldBlur()}
                           className={cn(
                             "w-full px-4 py-3 rounded-lg border bg-input text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary",
                             errors.investorType ? "border-destructive" : "border-border"
@@ -660,7 +660,7 @@ export default function ApplyPage() {
                         id="investmentTimeline"
                         value={formData.investmentTimeline}
                         onChange={(e) => handleInputChange('investmentTimeline', e.target.value)}
-                        onBlur={() => handleFieldBlur('investmentTimeline')}
+                        onBlur={() => handleFieldBlur()}
                         className={cn(
                           "w-full px-4 py-3 rounded-lg border bg-input text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary",
                           errors.investmentTimeline ? "border-destructive" : "border-border"

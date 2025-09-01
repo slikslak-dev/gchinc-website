@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
   images: {
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 31536000,
+    // Disable server-side image optimization for Cloudflare Workers
+    unoptimized: true,
   },
   compress: true,
   poweredByHeader: false,

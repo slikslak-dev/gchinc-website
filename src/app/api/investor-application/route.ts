@@ -3,6 +3,10 @@ import { EmailService } from '@/lib/email'
 import { validateInvestorApplication, validateAntiSpam } from '@/lib/validation'
 import type { InvestorApplicationData } from '@/lib/types'
 
+// Configure for Edge Runtime
+export const runtime = 'edge'
+export const preferredRegion = 'auto'
+
 // Rate limiting data structure (in production, use Redis or similar)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>()
 

@@ -1,0 +1,56 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  # Triggers on push to main branch
+  push:
+    branches:
+      - main
+  # Allows manual trigger from GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Cloudflare Pages
+    
+    steps:
+      # Checkout the repository code
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Setup Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      # Build the Next.js application
+      - name: Build Next.js
+        run: npm run build
+        env:
+          # Add any build-time environment variables here
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL || 'https://gchi-website.pages.dev' }}
+
+      # Build for Cloudflare using Vercel output
+      - name: Build for Cloudflare
+        run: |
+          npx vercel build --prod --local-config=vercel-build.json
+          npx @cloudflare/next-on-pages --skip-build
+
+      # Deploy to Cloudflare Pages
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: gchi-website
+          directory: .vercel/output/static
+          # GitHub branch name will be used for the deployment environment
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          # Production deployment only for main branch
+          branch: ${{ github.ref == 'refs/heads/main' && 'main' || github.head_ref }}

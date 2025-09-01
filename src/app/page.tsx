@@ -1,12 +1,10 @@
 "use client"
 
-import type { Metadata } from 'next'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { InvestmentCard } from '@/components/investment-card'
 import { StatsCard } from '@/components/stats-card'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
+import { Card } from '@/components/ui/card'
 import { 
   TrendingUp, 
   Shield, 
@@ -15,7 +13,6 @@ import {
   CheckCircle2, 
   ArrowRight,
   Star,
-  MapPin,
   DollarSign
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
