@@ -1,16 +1,6 @@
 name = "goldencanadianhomes"
-main = ".vercel/output/static/_worker.js"
-compatibility_date = "2025-08-01"
-compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
-
-[build]
-command = "npm run build:next && npx @cloudflare/next-on-pages"
-
-[assets]
-directory = ".vercel/output/static"
-# Exclude worker files from assets
-ignore = ["_worker.js"]
+compatibility_date = "2025-08-01"
 
 # D1 Database binding (optional - uncomment when needed)
 # [[d1_databases]]
