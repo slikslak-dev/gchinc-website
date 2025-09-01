@@ -1,6 +1,7 @@
 name = "goldencanadianhomes"
 pages_build_output_dir = ".vercel/output/static"
 compatibility_date = "2025-08-01"
+compatibility_flags = ["nodejs_compat"]
 
 # D1 Database binding (optional - uncomment when needed)
 # [[d1_databases]]
