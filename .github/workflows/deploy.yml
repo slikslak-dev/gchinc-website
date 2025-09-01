@@ -31,14 +31,14 @@ jobs:
 
       # Build the Next.js application
       - name: Build Next.js
-        run: npm run build
+        run: npm run build:next
         env:
           # Add any build-time environment variables here
-          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL || 'https://gchi-website.pages.dev' }}
+          NEXT_PUBLIC_APP_URL: 'https://goldencanadianhomes.ca'
 
       # Build for Cloudflare Workers
       - name: Build for Cloudflare Workers
-        run: npx @cloudflare/next-on-pages
+        run: npm run build:cf
 
       # Deploy to Cloudflare Workers
       - name: Deploy to Cloudflare Workers
@@ -46,4 +46,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy
+          command: pages deploy .vercel/output/static --project-name=goldencanadianhomes

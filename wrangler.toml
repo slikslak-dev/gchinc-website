@@ -1,4 +1,4 @@
-name = "gchi-website"
+name = "goldencanadianhomes"
 main = ".vercel/output/static/_worker.js"
 compatibility_date = "2025-08-01"
 compatibility_flags = ["nodejs_compat"]
@@ -8,6 +8,8 @@ command = "npm run build && npx @cloudflare/next-on-pages"
 
 [assets]
 directory = ".vercel/output/static"
+# Exclude worker files from assets
+ignore = ["_worker.js"]
 
 # D1 Database binding (optional - uncomment when needed)
 # [[d1_databases]]

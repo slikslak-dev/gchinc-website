@@ -1,16 +1,18 @@
 {
-  "name": "gchi-website",
+  "name": "goldencanadianhomes",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && npm run build:cf",
+    "build:next": "next build",
     "build:cf": "npx @cloudflare/next-on-pages@latest",
-    "preview:cf": "npx wrangler pages dev .vercel/output/static --local",
-    "deploy:cf": "npx wrangler pages deploy .vercel/output/static",
+    "preview": "npx wrangler pages dev .vercel/output/static --local",
+    "deploy": "npx wrangler pages deploy .vercel/output/static",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "start": "next start"
+    "start": "next start",
+    "cf:dev": "npm run build:next && npm run build:cf && npm run preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

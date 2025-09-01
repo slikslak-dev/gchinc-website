@@ -28,14 +28,14 @@ jobs:
 
       # Build the Next.js application
       - name: Build Next.js
-        run: npm run build
+        run: npm run build:next
         env:
           # Preview environment variables
-          NEXT_PUBLIC_SITE_URL: https://preview.gchi-website.pages.dev
+          NEXT_PUBLIC_APP_URL: 'https://preview.goldencanadianhomes.ca'
 
       # Build for Cloudflare Workers
       - name: Build for Cloudflare Workers
-        run: npx @cloudflare/next-on-pages
+        run: npm run build:cf
 
       # Deploy preview to Cloudflare Workers
       - name: Deploy Preview to Cloudflare Workers
@@ -43,7 +43,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --env preview
+          command: pages deploy .vercel/output/static --project-name=goldencanadianhomes --env preview
 
       # Preview deployment success
       - name: Preview Deployment Success
