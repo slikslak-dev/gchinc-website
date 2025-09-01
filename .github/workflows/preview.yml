@@ -39,7 +39,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy .vercel/output/static --project-name=goldencanadianhomes --env preview
+          command: pages deploy .vercel/output/static --project-name=goldencanadianhomes
 
       # Preview deployment success
       - name: Preview Deployment Success
