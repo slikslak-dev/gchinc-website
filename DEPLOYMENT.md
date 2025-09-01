@@ -242,5 +242,23 @@ wrangler pages rollback --project-name=gchi-website
 - [@cloudflare/next-on-pages](https://github.com/cloudflare/next-on-pages)
 - [Resend Documentation](https://resend.com/docs)
 
+## Maintenance Mode
+
+### Enable Maintenance Mode
+Edit `src/middleware.ts` and set:
+```typescript
+const MAINTENANCE_MODE = true
+```
+
+### Disable Maintenance Mode  
+Edit `src/middleware.ts` and set:
+```typescript
+const MAINTENANCE_MODE = false
+```
+
+### Bypass Maintenance Mode
+- Add your IP to `BYPASS_IPS` array in middleware.ts
+- Or set cookie: `maintenance-bypass=gchi-admin-2025`
+
 ## Contact
-For deployment issues or questions, refer to the WARP.md file or contact the development team.
+For deployment issues or questions, refer to the CLAUDE.md file or contact the development team.

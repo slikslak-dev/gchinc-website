@@ -2,11 +2,6 @@
 
 Sharia-compliant real estate investment platform for Ontario investors.
 
-## 📚 Project Documentation
-
-- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Complete Cloudflare Pages deployment guide
-- **[WARP.md](./WARP.md)** - AI agent configuration guide
-
 ## 🚀 Quick Start
 
 ```bash
@@ -17,10 +12,10 @@ npm install
 npm run dev
 
 # Build for production
-npm run build
+npm run build:full
 ```
 
-## 🏭️ Tech Stack
+## 🏗️ Tech Stack
 
 - **Framework**: Next.js 15 (App Router)
 - **Styling**: Tailwind CSS v4
@@ -29,36 +24,34 @@ npm run build
 - **Runtime**: Cloudflare Workers (Edge Runtime)
 - **Email**: Resend integration
 
-## 📊 Current Status
-
-- ✅ **Phase 1 Complete**: Foundation & Sharia-compliant content
-- 🟡 **Phase 2 Ready**: Content implementation & forms
-- 🔵 **Phase 3 Planned**: Advanced features & optimization
-
-## 🔗 Key Pages
-
-- `/` - Home (Halal real-estate investing)
-- `/invest` - Investment tiers (5%-6% profit-share)
-- `/sharia-compliance` - Islamic finance principles
-- `/apply` - Investor application form
-- `/portfolio` - Current assets & development pipeline
-
-Open [http://localhost:3000](http://localhost:3000) to view the site locally.
-
-## 🔧 Development Scripts
+## 🔧 Development Commands
 
 ```bash
 npm run dev          # Start Next.js dev server (localhost:3000)
-npm run build        # Build for production
+npm run build        # Standard Next.js build
 npm run build:cf     # Build for Cloudflare Pages
-npm run preview:cf   # Preview with Cloudflare runtime
+npm run build:full   # Complete build (Next.js + Cloudflare)
+npm run preview      # Preview Cloudflare build locally
 npm run lint         # Run ESLint
-npm run deploy:cf    # Deploy to Cloudflare Pages
+npm run typecheck    # Run TypeScript type checking
 ```
+
+## 📚 Documentation
+
+- **[CLAUDE.md](./CLAUDE.md)** - Development guide for Claude Code
+- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Complete deployment & maintenance guide  
+- **[WARP.md](./WARP.md)** - AI agent configuration guide
+
+## 🌐 Development Pipeline
+
+1. **Local Development**: `npm run dev` (instant preview)
+2. **Test Cloudflare Build**: `npm run build:full && npm run preview`
+3. **Feature Branch**: Create PR → Automatic preview deployment
+4. **Production**: Merge to main → Automatic production deployment
 
 ## 🔒 Environment Variables
 
-Create `.env.local` for local development:
+Create `.env.local` for development:
 
 ```env
 RESEND_API_KEY=your_resend_api_key
@@ -68,15 +61,13 @@ REPLY_TO_EMAIL=info@gchi.ca
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-For production, set these in Cloudflare Pages dashboard. See [DEPLOYMENT.md](./DEPLOYMENT.md) for details.
+## 📊 Project Status
 
-## 📡 Deployment
-
-This project is deployed on **Cloudflare Pages** with automatic deployments:
-- **Production**: Pushes to `main` branch
-- **Preview**: All other branches and PRs
-
-For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+- ✅ **Foundation**: Next.js 15 + Cloudflare Pages setup complete
+- ✅ **Components**: shadcn/ui design system integrated
+- ✅ **Email**: Resend integration working
+- ✅ **CI/CD**: Automated deployments configured
+- 🔧 **Maintenance**: Currently in maintenance mode
 
 ---
 
