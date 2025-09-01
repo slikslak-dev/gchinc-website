@@ -48,7 +48,5 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: gchi-website
           directory: .vercel/output/static
-          # GitHub branch name will be used for the deployment environment
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           # Production deployment only for main branch
           branch: ${{ github.ref == 'refs/heads/main' && 'main' || github.head_ref }}

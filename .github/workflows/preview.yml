@@ -45,22 +45,11 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: gchi-website
           directory: .vercel/output/static
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           # Deploy to preview branch
           branch: preview-${{ github.event.pull_request.number }}
 
-      # Comment on PR with preview URL
-      - name: Comment Preview URL
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const prNumber = context.issue.number;
-            const previewUrl = `https://preview-${prNumber}.gchi-website.pages.dev`;
-            
-            github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: `🚀 Preview deployed to: ${previewUrl}`
-            });
+      # Preview URL will be available at: https://preview-{PR-NUMBER}.gchi-website.pages.dev
+      - name: Preview Deployment Success
+        run: |
+          echo "🚀 Preview deployment complete!"
+          echo "Preview URL: https://preview-${{ github.event.pull_request.number }}.gchi-website.pages.dev"
