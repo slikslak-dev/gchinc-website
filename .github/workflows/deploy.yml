@@ -36,17 +36,14 @@ jobs:
           # Add any build-time environment variables here
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL || 'https://gchi-website.pages.dev' }}
 
-      # Build for Cloudflare Pages
-      - name: Build for Cloudflare
+      # Build for Cloudflare Workers
+      - name: Build for Cloudflare Workers
         run: npx @cloudflare/next-on-pages
 
-      # Deploy to Cloudflare Pages
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+      # Deploy to Cloudflare Workers
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: gchi-website
-          directory: .vercel/output/static
-          # Production deployment only for main branch
-          branch: ${{ github.ref == 'refs/heads/main' && 'main' || github.head_ref }}
+          command: deploy

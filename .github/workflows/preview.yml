@@ -33,23 +33,20 @@ jobs:
           # Preview environment variables
           NEXT_PUBLIC_SITE_URL: https://preview.gchi-website.pages.dev
 
-      # Build for Cloudflare Pages
-      - name: Build for Cloudflare
+      # Build for Cloudflare Workers
+      - name: Build for Cloudflare Workers
         run: npx @cloudflare/next-on-pages
 
-      # Deploy preview to Cloudflare Pages
-      - name: Deploy Preview to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+      # Deploy preview to Cloudflare Workers
+      - name: Deploy Preview to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: gchi-website
-          directory: .vercel/output/static
-          # Deploy to preview branch
-          branch: preview-${{ github.event.pull_request.number }}
+          command: deploy --env preview
 
-      # Preview URL will be available at: https://preview-{PR-NUMBER}.gchi-website.pages.dev
+      # Preview deployment success
       - name: Preview Deployment Success
         run: |
           echo "🚀 Preview deployment complete!"
-          echo "Preview URL: https://preview-${{ github.event.pull_request.number }}.gchi-website.pages.dev"
+          echo "Preview URL will be available at your Workers subdomain"
